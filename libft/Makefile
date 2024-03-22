@@ -6,7 +6,7 @@
 #    By: jperez-r <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/01 22:28:09 by jperez-r          #+#    #+#              #
-#    Updated: 2024/03/07 14:31:36 by jperez-r         ###   ########.fr        #
+#    Updated: 2024/03/22 18:34:14 by jperez-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,6 +51,7 @@ SRCS    = ft_strlen.c \
 		ft_putstr_fd.c \
 		ft_putendl_fd.c \
 		ft_putnbr_fd.c \
+		ft_puterror.c \
 		ft_lstnew.c \
 		ft_lstadd_front.c \
 		ft_lstadd_back.c \
