@@ -6,7 +6,7 @@
 #    By: jperez-r <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/01 22:28:09 by jperez-r          #+#    #+#              #
-#    Updated: 2024/03/22 18:34:14 by jperez-r         ###   ########.fr        #
+#    Updated: 2024/03/27 18:47:33 by jperez-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,8 @@ SRCS    = ft_strlen.c \
 		ft_strlcpy.c \
 		ft_strlcat.c \
 		ft_strnstr.c \
+		ft_strrstr.c \
+		ft_strnrstr.c \
 		ft_atoi.c \
 		ft_calloc.c \
 		ft_free_double.c \

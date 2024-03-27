@@ -6,7 +6,7 @@
 /*   By: jperez-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 18:54:19 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/03/22 19:17:16 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/03/27 18:55:02 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*ft_strrstr(const char *haystack, const char *needle)
 		return (s1);
 	s2 = (char *)needle;
 	i -= j;
-	while (s1[i] && i > 0)
+	/*while (s1[i] && i > 0)
 	{
 		j = 0;
 		while (s1[i + j] == s2[j])
@@ -47,6 +47,6 @@ char	*ft_strrstr(const char *haystack, const char *needle)
 			j++;
 		}
 		i++;
-	}
+	}*/
 	return (NULL);
 }
