@@ -6,7 +6,7 @@
 /*   By: jperez-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:30:59 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/03/22 18:23:43 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/03/28 14:26:31 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@
 # include "./libft/libft.h"
 # include "./libft/gnl/get_next_line.h"
 
-int		error_so_long(int er);
-
-int		so_long(char **s);
+int		error_so_long(int er, char *s);
+int		can_read(char *s);
+int		so_long(char *s);
 int		main(int argc, char *argv[]);
 
 #endif

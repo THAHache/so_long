@@ -6,12 +6,13 @@
 #    By: jperez-r <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 19:24:26 by jperez-r          #+#    #+#              #
-#    Updated: 2024/03/27 18:57:24 by jperez-r         ###   ########.fr        #
+#    Updated: 2024/03/28 14:38:35 by jperez-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS	=	so_long.c \
-			#error_so_long.c \
+			error_so_long.c \
+			can_read.c
 
 LIBFT	=	libft/
 
