@@ -6,7 +6,7 @@
 /*   By: jperez-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 18:54:19 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/03/27 18:55:02 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/03/28 12:19:31 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,39 +14,29 @@
 
 char	*ft_strrstr(const char *haystack, const char *needle)
 {
-	size_t	i;
-	size_t	j;
+	int		i;
+	int		j;
+	int		k;
 	char	*s1;
 	char	*s2;
 
 	i = ft_strlen(haystack);
-	j = ft_strlen(needle);
+	j = ft_strlen(needle) - 1;
 	s1 = (char *)haystack;
-	if (!s1 || i < j)
+	if (!s1 || i < j + 1)
 		return (NULL);
 	if (!*needle)
 		return (s1);
 	s2 = (char *)needle;
-	i -= j;
-	/*while (s1[i] && i > 0)
+	while (--i >= 0)
 	{
-		j = 0;
-		while (s1[i + j] == s2[j])
+		k = 0;
+		while (s1[i - j] && s1[i - k] == s2[j - k] && k <= j)
 		{
-
-			j--;
+			if (j == k)
+				return (&s1[i - j]);
+			k++;
 		}
-		i--;
 	}
-
-		j = 0;
-		while (s1[i + j] == s2[j] && i + j < len)
-		{
-			if (s2[j + 1] == '\0')
-				return (&s1[i]);
-			j++;
-		}
-		i++;
-	}*/
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: jperez-r <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 17:48:35 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/03/27 19:28:36 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/03/28 13:59:26 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ int	main(int argc, char *argv[])
 		//Hay que comprobar que las nuevas funciones ft_strrstr y ft_strnrstr funcionan bien
 
 
-	if (!ft_strnrstr(argv[1], ".ber", 4))
+	if (!ft_strnrstr(argv[1], ".ber", 5))
 		return (error_so_long(0));
+
 	/*if (!so_long(argv))
 		return (0);*/
 	return (1);
