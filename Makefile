@@ -6,7 +6,7 @@
 #    By: jperez-r <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 19:24:26 by jperez-r          #+#    #+#              #
-#    Updated: 2024/03/28 14:38:35 by jperez-r         ###   ########.fr        #
+#    Updated: 2024/04/23 16:40:11 by jperez-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,10 @@ SRCS	=	so_long.c \
 LIBFT	=	libft/
 
 GNL		=	gnl/
+
+MLX	=	-I libft -L libft \
+			-I /usr/local/include -L /usr/local/lib \
+			-l mlx -l ft -framework OpenGL -framework Appkit
 
 OBJS	=	${SRCS:.c=.o}
 
@@ -41,7 +45,7 @@ ${NAME}	:	${OBJS}
 			else \
 				echo "${RED}********* FAIL CREATION *********${RESET}"; \
 			fi
-			@${CC} ${OBJS} -L${LIBFT} -lft -o ${NAME}
+			@${CC} ${OBJS} -L${LIBFT} -lft -o ${NAME} ${MLX}
 
 
 all		:	${NAME}
