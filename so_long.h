@@ -26,7 +26,7 @@
 # include <errno.h>
 # include "./libft/libft.h"
 # include "./libft/gnl/get_next_line.h"
-# include "mlx.h"
+# include "./minilibx-linux/mlx.h"
 
 # define W 13//119
 # define A 0//97

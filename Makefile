@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jperez-r <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 19:24:26 by jperez-r          #+#    #+#              #
-#    Updated: 2024/04/23 16:40:11 by jperez-r         ###   ########.fr        #
+#    Updated: 2024/05/15 20:18:08 by jperez-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,15 +18,24 @@ LIBFT	=	libft/
 
 GNL		=	gnl/
 
-MLX	=	-I libft -L libft \
-			-I /usr/local/include -L /usr/local/lib \
-			-l mlx -l ft -framework OpenGL -framework Appkit
+# MAC
+#MLX	=	-I libft -L libft \
+#			-I /usr/local/include -L /usr/local/lib \
+#			-l mlx -l ft -framework OpenGL -framework Appkit
+
+# LINUX
+#MLX		=	-I libft -L libft \
+#			-I /usr/local/include -L /usr/local/lib \
+#			-l -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
+MLX		=	minilibx-linux/
 
 OBJS	=	${SRCS:.c=.o}
 
 CC		=	gcc
 
 CFLAGS	=	-Wall -Wextra -Werror
+
+MLXFLAGS =	-lmlx -lXert -lX11
 
 RED		=	\033[31m
 GREEN	=	\033[32m
@@ -36,7 +45,7 @@ RESET	=	\033[0m
 NAME	=	so_long
 
 .o:	.c
-			${CC} ${CFLAGS} -c $< -o $@
+			${CC} ${CFLAGS} -I/usr/include -Iminilibx-linux -O3 -c $< -o $@
 
 ${NAME}	:	${OBJS}
 			@make -C ${LIBFT}
@@ -45,13 +54,21 @@ ${NAME}	:	${OBJS}
 			else \
 				echo "${RED}********* FAIL CREATION *********${RESET}"; \
 			fi
-			@${CC} ${OBJS} -L${LIBFT} -lft -o ${NAME} ${MLX}
+#			@make -C ${MLX}
+#			@if [ -f ${MLX}/libmlx.a ]; then \
+#				echo "${GREEN}********* CREATION SUCCESS *********${RESET}"; \
+#			else \
+#				echo "${RED}********* FAIL CREATION *********${RESET}"; \
+#			fi
+#			@${CC} ${OBJS} -L${LIBFT} -L${MLX} -lft -o ${NAME}
+			@${CC} ${OBJS} -L${LIBFT} -L${MLX} -L${MXFLAGS} -lft -o ${NAME}
 
 
 all		:	${NAME}
 
 clean	:
 			@make -C ${LIBFT} clean
+#			@make -C ${MLX} clean
 			rm -f ${OBJS}
 			@echo "${YELLOW}********* CLEAN SUCCESS *********${RESET}"; \
 
