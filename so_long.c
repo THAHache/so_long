@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jperez-r <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 17:48:35 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/04/26 20:24:48 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/05/23 14:19:46 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /**
  * Inicializar la estructura con valores por defecto
 */
-void	initialize_struct(t_vars *vars)
+void	initialize_vars(t_vars *vars)
 {
 	vars->mlx = NULL;
 	vars->win = NULL;
@@ -100,16 +100,17 @@ int	movement(t_vars *vars)
 		}
 		x++;
 	}
-	mlx_string_put(vars->mlx, vars->win, 4, vars->ylimit, WHITE, "Movimientos: ");
+	mlx_string_put(vars->mlx, vars->win, (y/2)-50, vars->ylimit + 12, WHITE, "Movimientos: ");
 	mov = ft_itoa(vars->moves);
-	mlx_string_put(vars->mlx, vars->win, 128, vars->ylimit, WHITE, mov);
+	mlx_string_put(vars->mlx, vars->win, (y/2)+30, vars->ylimit + 13, WHITE, mov);
 	if (mov)
 		free(mov);
 	return (0);
 }
 
 /**
- * Incrementa el número de movimientos que se han hecho y se mueve
+ * Incrementa el número de movimientos que se han hecho y se mueve.
+ * El numero de movimientos máximo será de un int
 */
 int	increase_move(t_vars *vars, int x, int y)
 {
@@ -126,16 +127,16 @@ int	increase_move(t_vars *vars, int x, int y)
 int	move(int keycode, t_vars *vars)
 {
 	mlx_pixel_put(vars->mlx, vars->win, vars->x, vars->y, 0x00000000);
-	if (keycode == W && vars->y > 0)
+	if ((keycode == W || keycode == Z || keycode == UP) && vars->y > 0)
 		//vars->y--;
 		increase_move(vars, 0, -1);
-	else if (keycode == A && vars->x > 0)
+	else if ((keycode == A || keycode == Q || keycode == LEFT) && vars->x > 0)
 		//vars->x--;
 		increase_move(vars, -1, 0);
-	else if (keycode == S && vars->y < vars->ylimit - 1)
+	else if ((keycode == S || keycode == DOWN) && vars->y < vars->ylimit - 1)
 		//vars->y++;
 		increase_move(vars, 0, 1);
-	else if (keycode == D && vars->x < vars->xlimit - 1)
+	else if ((keycode == D || keycode == RIGHT) && vars->x < vars->xlimit - 1)
 		//vars->x++;
 		increase_move(vars, 1, 0);
 	mlx_pixel_put(vars->mlx, vars->win, vars->x, vars->y, 0x00FFFFFF);
@@ -152,17 +153,17 @@ int	openwin()
 {
 	t_vars	vars;
 
-	initialize_struct(&vars);
+	initialize_vars(&vars);
 	vars.mlx = mlx_init();
 	if (!vars.mlx)
 		return (1);
 
 	/**
 	 * De momento, la x mínima para poder hacer bien el marcador tiene que ser
-	 * de unos 180 pixeles para poder tener hasta 99999 movimientos
+	 * de unos 110 pixeles para poder tener hasta 99999 movimientos
 	*/
-	select_limit(&vars, 180, 30);
-	vars.win = mlx_new_window(vars.mlx, vars.xlimit, vars.ylimit + 23, "so_long");
+	select_limit(&vars, 400, 200);
+	vars.win = mlx_new_window(vars.mlx, vars.xlimit, vars.ylimit + 16, "so_long");
 
 	paint_back(&vars, 0x00FF55555);
 	mlx_pixel_put(vars.mlx, vars.win, vars.x, vars.y, 0x00FFFFFF);
@@ -188,9 +189,14 @@ int	so_long(char *s)
 	if (!can_read(s))
 		return (0);
 	fd = open (s, O_RDONLY);
-	openwin();
+	if (check_map(fd))
+	{
+		close(fd);
+		return (1);
+	}
+	//openwin();
 	close(fd);
-	return (1);
+	return (0);
 }
 
 int	main(int argc, char *argv[])
@@ -201,7 +207,7 @@ int	main(int argc, char *argv[])
 		return (error_so_long(1, NULL));
 	if (!ft_strnrstr(argv[1], ".ber", 5))
 		return (error_so_long(0, NULL));
-	if (!so_long(argv[1]))
+	if (so_long(argv[1]))
 		return (0);
 	return (1);
 }
