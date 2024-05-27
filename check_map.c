@@ -6,7 +6,7 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 14:39:28 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/05/23 15:10:16 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:21:56 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,28 +22,66 @@ void	initialize_map(t_map *map)
 	map->yfirst = 0;
 	map->ycurrent = 0;
 }
+/**
+ * Probablemente no use esta función, pero ahí queda
+*/
+int	n_row_map(char **map)
+{
+	int	rm;
+
+	rm = 0;
+	while (map[rm])
+		rm++;
+	return (rm);
+}
+
+int	check_wall(char *row)
+{
+	int	i;
+
+	i = 0;
+	/**
+	 * Aquí hay un problema con el split, parece.
+	 * La primera posición dice que es Acknowledge (reconocimiento)
+	 * Cuando debería ser el primer caracter que hay en el .ber
+	*/
+	if (!ft_isprint(row[i]))
+		i++;
+	while (row[i])
+	{
+		if(row[i] != '1')
+			return (1);
+		i++;
+	}
+	return (0);
+	
+}
 
 int	read_map(char *buff)
 {
 	char **map;
 	int	i;
+	//int	row;
 	//int	j;
 
 	map = ft_split(buff, '\n');
-	printf("%s\n", map[0]);
+	//row = n_row_map(map);
+	if(check_wall(map[0]) != 1)
+		printf("%s\n", map[0]);
+	//printf("%d\n", row);
 	i = 1;
 	/**
 	 * Necesito saber cuantas ¿filas? tiene map
 	 * para comprobar que la primera y la última son todo 1
 	*/
-	while (map[i])
+	while (map[i + 1])
 	{
 		//j = 0;
 		printf("%s\n", map[i]);
 		i++;
 	}
-	
-		//printf("hola\n");
+	printf("%s\n", map[i]);
+	//printf("i= %d\nmap= %lu\n", i, sizeof(map[i][3]));
 	ft_free_double(map);
 	return (0);
 }

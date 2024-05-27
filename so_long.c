@@ -6,7 +6,7 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 17:48:35 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/05/23 14:19:46 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:38:03 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,9 +185,9 @@ int	openwin()
 int	so_long(char *s)
 {
 	int	fd;
-
-	if (!can_read(s))
-		return (0);
+	
+	if (can_read(s) < 0)
+		return(1);
 	fd = open (s, O_RDONLY);
 	if (check_map(fd))
 	{
