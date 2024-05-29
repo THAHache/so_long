@@ -6,14 +6,16 @@
 #    By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 19:24:26 by jperez-r          #+#    #+#              #
-#    Updated: 2024/05/23 13:18:06 by jperez-r         ###   ########.fr        #
+#    Updated: 2024/05/29 17:21:46 by jperez-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS	=	so_long.c \
 		error_so_long.c \
+		initialize_structs.c \
 		can_read.c \
-		check_map.c
+		check_map.c \
+		check_path.c
 
 LIBFT	=	libft
 

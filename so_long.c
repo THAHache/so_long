@@ -6,25 +6,11 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 17:48:35 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/05/27 18:38:03 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/05/29 17:18:39 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-/**
- * Inicializar la estructura con valores por defecto
-*/
-void	initialize_vars(t_vars *vars)
-{
-	vars->mlx = NULL;
-	vars->win = NULL;
-	vars->x = 0;
-	vars->xlimit = 0;
-	vars->y = 0;
-	vars->ylimit = 0;
-	vars->moves = 0;
-}
 
 /**
  * Inicializar los límites del mapa y el eje central
@@ -205,8 +191,8 @@ int	main(int argc, char *argv[])
 		return (0);
 	if (argc != 2)
 		return (error_so_long(1, NULL));
-	if (!ft_strnrstr(argv[1], ".ber", 5))
-		return (error_so_long(0, NULL));
+	//if (!ft_strnrstr(argv[1], ".ber", 5))
+	//	return (error_so_long(0, NULL));
 	if (so_long(argv[1]))
 		return (0);
 	return (1);

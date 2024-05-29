@@ -6,7 +6,7 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:30:59 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/05/23 14:17:50 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/05/29 17:30:40 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,26 @@ typedef struct	s_vars {
 	int	moves;
 }				t_vars;
 typedef struct	s_map {
+	int	row;
+	int	col;
 	int	p;
 	int	e;
 	int	c;
+}				t_map;
+
+typedef	struct s_player {
 	int	xfirst;
 	int	xcurrent;
 	int	yfirst;
 	int	ycurrent;
-}				t_map;
+	int	c;
+	//int	last_pos[2];
+}				t_player;
+
+
+void		initialize_vars(t_vars *vars);
+void		initialize_map(t_map *map);
+void		initialize_player(t_player *pla);
 
 int		error_so_long(int er, char *s);
 int		can_read(char *s);
