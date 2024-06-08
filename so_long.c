@@ -6,7 +6,7 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 17:48:35 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/05/29 17:18:39 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/06/08 22:26:07 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,7 @@ int	closewin(t_vars *vars)
 	return (0);
 }
 
-// Función que dibuja 4 puntos blancos en el mapa
-int	draw_square(t_vars *vars)
-{
-	mlx_pixel_put(vars->mlx, vars->win, 300, 160, 0x00FFFFFF);
-	mlx_pixel_put(vars->mlx, vars->win, 300, 200, 0x00FFFFFF);
-	mlx_pixel_put(vars->mlx, vars->win, 340, 160, 0x00FFFFFF);
-	mlx_pixel_put(vars->mlx, vars->win, 340, 200, 0x00FFFFFF);
-	return (0);
-}
+
 
 /**
  * Pinta el fondo de color
@@ -66,6 +58,38 @@ int	paint_back(t_vars *vars, int color)
 	return (0);
 }
 
+/**
+ * pinta el mapa que lee con los sprites
+ */
+int	draw_map(t_vars vars, t_map map)
+{
+	int		i;
+	int		j;
+	t_sprite	wall;
+	t_sprite	floor;
+
+	initialize_plan(&floor, &wall);
+	wall.img = mlx_xpm_file_to_image(vars.mlx, wall.route, &wall.width, &wall.height);
+	floor.img = mlx_xpm_file_to_image(vars.mlx, floor.route, &floor.width, &floor.height);
+	i = 0;
+	//printf("%d\n", map.row);
+	j = 0;
+	while (i < map.row)
+	{
+		j = 0;
+		while (j < map.col)
+		{
+			if(map.plan[i][j] == '1')
+				mlx_put_image_to_window(vars.mlx, vars.win, wall.img, i*32, j*32);
+			else
+				mlx_put_image_to_window(vars.mlx, vars.win, floor.img, i*32, j*32);
+			j++;
+		}
+		i++;
+	}
+
+	return (0);
+}
 /**
  * Muestra la barra de movimientos y el número de estos
 */
@@ -135,23 +159,34 @@ int	move(int keycode, t_vars *vars)
 /**
  * Creación y control de las ventanas y la estructura
 */
-int	openwin()
+int	openwin(t_map map)
 {
 	t_vars	vars;
+	void	*pj;
+	void	*exit_map;
+	int	width;
+	int	height;
 
 	initialize_vars(&vars);
 	vars.mlx = mlx_init();
 	if (!vars.mlx)
 		return (1);
-
 	/**
 	 * De momento, la x mínima para poder hacer bien el marcador tiene que ser
 	 * de unos 110 pixeles para poder tener hasta 99999 movimientos
+	 * con 5 columnas sólo me da para pintar 3 sprites y me descuadra los movimientos
+	 * Posible solución: alinear los movimientos a la izquierda del marcador en lugar de centrarlo
 	*/
-	select_limit(&vars, 400, 200);
+	select_limit(&vars, map.row*32, map.col*32);
 	vars.win = mlx_new_window(vars.mlx, vars.xlimit, vars.ylimit + 16, "so_long");
 
 	paint_back(&vars, 0x00FF55555);
+	draw_map(vars, map);
+
+	pj = mlx_xpm_file_to_image(vars.mlx, "./sprites/human.xpm", &width, &height);
+	exit_map = mlx_xpm_file_to_image(vars.mlx, "./sprites/stairs.xpm", &width, &height);
+	mlx_put_image_to_window(vars.mlx, vars.win, exit_map, 20, 20);
+	mlx_put_image_to_window(vars.mlx, vars.win, pj, 10, 10);
 	mlx_pixel_put(vars.mlx, vars.win, vars.x, vars.y, 0x00FFFFFF);
 
 	movement(&vars);
@@ -162,8 +197,9 @@ int	openwin()
 
 	mlx_loop(vars.mlx);
 
-	//mlx_destroy_window(vars.mlx, vars.win);
-	//mlx_destroy_display(vars.mlx); NO INCUIDA EN OpenGL? usar para evitar los leaks
+	mlx_destroy_image(vars.mlx, pj);
+	mlx_destroy_window(vars.mlx, vars.win);
+	mlx_destroy_display(vars.mlx); //NO INCUIDA EN OpenGL? usar para evitar los leaks
 	free(vars.mlx);
 	return (0);
 }
@@ -171,16 +207,19 @@ int	openwin()
 int	so_long(char *s)
 {
 	int	fd;
+	t_map	map;
 	
 	if (can_read(s) < 0)
 		return(1);
 	fd = open (s, O_RDONLY);
-	if (check_map(fd))
+	initialize_map(&map);
+	if (check_map(fd, &map))
 	{
 		close(fd);
 		return (1);
 	}
-	//openwin();
+	openwin(map);
+	ft_free_double(map.plan);
 	close(fd);
 	return (0);
 }
@@ -191,8 +230,8 @@ int	main(int argc, char *argv[])
 		return (0);
 	if (argc != 2)
 		return (error_so_long(1, NULL));
-	//if (!ft_strnrstr(argv[1], ".ber", 5))
-	//	return (error_so_long(0, NULL));
+	if (!ft_strnrstr(argv[1], ".ber", 5))
+		return (error_so_long(0, NULL));
 	if (so_long(argv[1]))
 		return (0);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:30:59 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/05/29 17:30:40 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/06/08 21:51:29 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,19 @@ typedef struct	s_vars {
 	int	moves;
 }				t_vars;
 typedef struct	s_map {
+	char	**plan;
 	int	row;
 	int	col;
 	int	p;
 	int	e;
 	int	c;
 }				t_map;
+typedef struct	s_sprite {
+	void	*img;
+	char	*route;
+	int	width;
+	int	height;
+}				t_sprite;
 
 typedef	struct s_player {
 	int	xfirst;
@@ -76,10 +83,11 @@ typedef	struct s_player {
 void		initialize_vars(t_vars *vars);
 void		initialize_map(t_map *map);
 void		initialize_player(t_player *pla);
+void		initialize_plan(t_sprite *floor, t_sprite *wall);
 
 int		error_so_long(int er, char *s);
 int		can_read(char *s);
-int		check_map(int fd);
+int		check_map(int fd, t_map *map);
 int		so_long(char *s);
 int		main(int argc, char *argv[]);
 

@@ -6,7 +6,7 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 17:16:49 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/05/29 17:30:12 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/06/08 21:36:33 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	initialize_vars(t_vars *vars)
 
 void	initialize_map(t_map *map)
 {
+	map->plan = NULL;
 	map->row = 0;
 	map->col = 0;
 	map->p = 0;
@@ -43,4 +44,15 @@ void	initialize_player(t_player *pla)
 	pla->ycurrent = 0;
 	pla->c = 0;
 	//pla->last_pos = 0;
+}
+void	initialize_plan(t_sprite *floor, t_sprite *wall)
+{
+	floor->img = NULL;
+	floor->route = "./sprites/grass.xpm";
+	//floor->width = 0;
+	//floor->height = 0;
+	wall->img = NULL;
+	wall->route = "./sprites/brick.xpm";
+	//wall->width = 0;
+	//wall->height = 0;
 }

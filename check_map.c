@@ -6,7 +6,7 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 14:39:28 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/05/29 17:31:30 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/06/08 22:09:45 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,56 +75,59 @@ int	check_wall(char *row)
 	return (0);
 }
 
-int	read_map(char *s, t_map map, t_player pla)
+int	read_map(char *s, t_map *map, t_player pla)
 {
-	char **plan;
 	int	i;
 	int	j;
 
-	plan = ft_split(s, '\n');
-	map.col = col_map(plan);
-	//printf("col: %d\n", map.col);
-	if(check_wall(plan[0]) == 1 || check_wall(plan[map.row - 1]) == 1 || map.col < 2)
+
+/**
+ * borrar el siguiente if
+ */
+	if (pla.xcurrent)
+		return(1);
+	
+
+	map->plan = ft_split(s, '\n');
+	map->col = col_map(map->plan);
+	if(check_wall(map->plan[0]) == 1 || check_wall(map->plan[map->row - 1]) == 1 || map->col < 2)
 	{
-		ft_free_double(plan);
+		ft_free_double(map->plan);
 		return (1);
 	}
-	//printf("%s\n", plan[0]);
 	i = 1;
-	while (plan[i + 1])
+	while (map->plan[i + 1])
 	{
-		if (plan[i][0] != '1' || plan[i][strlen(plan[i]) - 1] != '1')
+		if (map->plan[i][0] != '1' || map->plan[i][strlen(map->plan[i]) - 1] != '1')
 		{
-			ft_free_double(plan);
+			ft_free_double(map->plan);
 			return (1);
 		}
 		j = 1;
-		while (plan[i][j] && j < map.col - 1)
+		while (map->plan[i][j] && j < map->col - 1)
 		{
-			if(!ft_strchr("01CEP", plan[i][j]) || map.e > 1 || map.p > 1)
+			if(!ft_strchr("01CEP", map->plan[i][j]) || map->e > 1 || map->p > 1)
 			{
-				//printf("%c\n", plan[i][j]);
-				ft_free_double(plan);
+				ft_free_double(map->plan);
 				return (1);
 			}
-			if(plan[i][j] == 'C')
-				map.c++;
-			if(plan[i][j] == 'E')
-				map.e++;
-			if(plan[i][j] == 'P')
+			if(map->plan[i][j] == 'C')
+				map->c++;
+			if(map->plan[i][j] == 'E')
+				map->e++;
+			if(map->plan[i][j] == 'P')
 			{
 				pla.xfirst = i;
 				pla.yfirst = j;
-				map.p++;
+				map->p++;
 			}
 			j++;
 		}
-			printf("%s\n", plan[i]);
+			//printf("%s\n", map->plan[i]);
 		i++;
 	}
-	//printf("%s\n", plan[i]);
-	//printf("i= %d\nplan= %lu\n", i, sizeof(plan[i][3]));
-	ft_free_double(plan);
+	//printf("aqui\n");
+	//ft_free_double(map->plan);
 	return (0);
 }
 
@@ -143,9 +146,8 @@ int	read_map(char *s, t_map map, t_player pla)
  * 		111
  * 
 */
-int	check_map(int fd)
+int	check_map(int fd, t_map *map)
 {
-	t_map		map;
 	t_player	pla;
 	int		datamap;
 	char		*buff;
@@ -155,7 +157,6 @@ int	check_map(int fd)
 	buff = malloc(sizeof(char) * 1000);
 	if(!buff)
 		return (1);
-	initialize_map(&map);
 	initialize_player(&pla);
 	if (!*aux)
 		//aux[0] = strdup("");
@@ -171,8 +172,8 @@ int	check_map(int fd)
 			aux[0] = ft_strjoin(aux[0], buff);
 	}
 	free(buff);
-	map.row = row_map(aux[0]);
-	if(map.row < 3)
+	map->row = row_map(aux[0]);
+	if(map->row < 3)
 	{
 		error_so_long(2, NULL);
 		free(aux[0]);
