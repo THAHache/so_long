@@ -6,7 +6,7 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:30:59 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/06/08 21:51:29 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/06/10 21:16:20 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,15 +46,6 @@
 # define GREEN 0x00FFFFFF
 # define BLUE 0x0000FF00
 
-typedef struct	s_vars {
-	void	*mlx;
-	void	*win;
-	int	x;
-	int	xlimit;
-	int	y;
-	int	ylimit;
-	int	moves;
-}				t_vars;
 typedef struct	s_map {
 	char	**plan;
 	int	row;
@@ -71,23 +62,38 @@ typedef struct	s_sprite {
 }				t_sprite;
 
 typedef	struct s_player {
-	int	xfirst;
+	int	xlast;
 	int	xcurrent;
-	int	yfirst;
+	int	ylast;
 	int	ycurrent;
 	int	c;
 	//int	last_pos[2];
 }				t_player;
 
+typedef struct	s_vars {
+	void		*mlx;
+	void		*win;
+	int		x;
+	int		xlimit;
+	int		y;
+	int		ylimit;
+	int		moves;
+	t_map		map;
+	t_player	pj;
+}				t_vars;
+
 
 void		initialize_vars(t_vars *vars);
 void		initialize_map(t_map *map);
 void		initialize_player(t_player *pla);
-void		initialize_plan(t_sprite *floor, t_sprite *wall);
+void		initialize_img(t_sprite *floor, char *path);
+void		initialize_plan(t_sprite *floor, t_sprite *wall, t_sprite *pj, t_sprite *exi, t_sprite *coll);
+
+void		destroy_images(t_vars vars, t_sprite *floor, t_sprite *wall, t_sprite *pj, t_sprite *exi, t_sprite *coll);
 
 int		error_so_long(int er, char *s);
 int		can_read(char *s);
-int		check_map(int fd, t_map *map);
+int		check_map(int fd, t_map *map, t_player *pj);
 int		so_long(char *s);
 int		main(int argc, char *argv[]);
 

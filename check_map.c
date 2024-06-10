@@ -6,7 +6,7 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 14:39:28 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/06/08 22:09:45 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/06/10 22:16:18 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,21 +75,14 @@ int	check_wall(char *row)
 	return (0);
 }
 
-int	read_map(char *s, t_map *map, t_player pla)
+int	read_map(char *s, t_map *map, t_player *jp)
 {
 	int	i;
 	int	j;
 
-
-/**
- * borrar el siguiente if
- */
-	if (pla.xcurrent)
-		return(1);
-	
-
 	map->plan = ft_split(s, '\n');
 	map->col = col_map(map->plan);
+	//printf("col: %d", map->col);
 	if(check_wall(map->plan[0]) == 1 || check_wall(map->plan[map->row - 1]) == 1 || map->col < 2)
 	{
 		ft_free_double(map->plan);
@@ -117,8 +110,8 @@ int	read_map(char *s, t_map *map, t_player pla)
 				map->e++;
 			if(map->plan[i][j] == 'P')
 			{
-				pla.xfirst = i;
-				pla.yfirst = j;
+				jp->xcurrent = i;
+				jp->ycurrent = j;
 				map->p++;
 			}
 			j++;
@@ -146,20 +139,19 @@ int	read_map(char *s, t_map *map, t_player pla)
  * 		111
  * 
 */
-int	check_map(int fd, t_map *map)
+int	check_map(int fd, t_map *map, t_player *pj)
 {
-	t_player	pla;
+	//t_player	pj;
 	int		datamap;
 	char		*buff;
-	char		*aux[4096];
+	static char		*aux[4096];
 	
 
 	buff = malloc(sizeof(char) * 1000);
 	if(!buff)
 		return (1);
-	initialize_player(&pla);
-	if (!*aux)
-		//aux[0] = strdup("");
+	//initialize_player(pj);
+	if (*aux == NULL)
 		aux[0] = ft_strdup("");
 	datamap = 1;
 	//printf("%i\n", aux[0][0]);
@@ -184,7 +176,7 @@ int	check_map(int fd, t_map *map)
 		free(aux[0]);
 		return (1);
 	}
-	if (read_map(aux[0], map, pla))
+	if (read_map(aux[0], map, pj))
 	{
 		error_so_long(2, NULL);
 		free(aux[0]);
