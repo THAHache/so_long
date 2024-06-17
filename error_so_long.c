@@ -6,7 +6,7 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 14:36:44 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/05/29 14:46:14 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/06/17 19:20:03 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int		error_so_long(int er, char *s)
 		msg = ft_strjoin("No such file or directory: ", s);
 	else if (er == 4)
 		msg = ft_strjoin("Permission denied: ", s);
-
+	else if (er == 5)
+		ft_puterror("The path is incorrect");
 	if (msg)
 	{
 		ft_puterror(msg);

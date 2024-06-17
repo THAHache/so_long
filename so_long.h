@@ -6,7 +6,7 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:30:59 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/06/10 21:16:20 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/06/17 19:45:42 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,10 @@ typedef struct	s_sprite {
 	int	height;
 }				t_sprite;
 
+/**
+ * Estructura para guardar los sprites
+ */
+
 typedef	struct s_player {
 	int	xlast;
 	int	xcurrent;
@@ -82,6 +86,7 @@ typedef struct	s_vars {
 	t_player	pj;
 }				t_vars;
 
+int	closewin(t_vars *vars);
 
 void		initialize_vars(t_vars *vars);
 void		initialize_map(t_map *map);
@@ -89,11 +94,23 @@ void		initialize_player(t_player *pla);
 void		initialize_img(t_sprite *floor, char *path);
 void		initialize_plan(t_sprite *floor, t_sprite *wall, t_sprite *pj, t_sprite *exi, t_sprite *coll);
 
+int	draw_map(t_vars vars);
+int	draw_floor(t_vars vars);
+int	draw_close(t_vars vars);
+int	draw_pj(t_vars vars);
+int	draw_open(t_vars vars);
+int	draw_pje(t_vars vars);
+
+int	movement(t_vars *vars);
+int	increase_move(t_vars *vars, int x, int y);
+int	move(int keycode, t_vars *vars);
+
 void		destroy_images(t_vars vars, t_sprite *floor, t_sprite *wall, t_sprite *pj, t_sprite *exi, t_sprite *coll);
 
 int		error_so_long(int er, char *s);
 int		can_read(char *s);
 int		check_map(int fd, t_map *map, t_player *pj);
+int	check_path(char *s, t_player *jp);
 int		so_long(char *s);
 int		main(int argc, char *argv[]);
 

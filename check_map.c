@@ -6,7 +6,7 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 14:39:28 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/06/10 22:16:18 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/06/17 19:59:01 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,21 +97,24 @@ int	read_map(char *s, t_map *map, t_player *jp)
 			return (1);
 		}
 		j = 1;
+	//printf("hola");
 		while (map->plan[i][j] && j < map->col - 1)
 		{
+			//printf("%c, %i, %i\n", map->plan[i][j], map->e, map->p);
 			if(!ft_strchr("01CEP", map->plan[i][j]) || map->e > 1 || map->p > 1)
 			{
 				ft_free_double(map->plan);
 				return (1);
 			}
+			//printf("hola");
 			if(map->plan[i][j] == 'C')
 				map->c++;
 			if(map->plan[i][j] == 'E')
 				map->e++;
 			if(map->plan[i][j] == 'P')
 			{
-				jp->xcurrent = i;
-				jp->ycurrent = j;
+				jp->ycurrent = i;
+				jp->xcurrent = j;
 				map->p++;
 			}
 			j++;
@@ -179,6 +182,13 @@ int	check_map(int fd, t_map *map, t_player *pj)
 	if (read_map(aux[0], map, pj))
 	{
 		error_so_long(2, NULL);
+		free(aux[0]);
+		return (1);
+	}
+	
+	if(check_path(aux[0], pj))
+	{
+		error_so_long(5, NULL);
 		free(aux[0]);
 		return (1);
 	}
