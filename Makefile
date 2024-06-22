@@ -6,7 +6,7 @@
 #    By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 19:24:26 by jperez-r          #+#    #+#              #
-#    Updated: 2024/05/29 17:21:46 by jperez-r         ###   ########.fr        #
+#    Updated: 2024/06/12 18:51:21 by jperez-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,9 @@ SRCS	=	so_long.c \
 		initialize_structs.c \
 		can_read.c \
 		check_map.c \
-		check_path.c
+		check_path.c \
+		draw.c \
+		move.c
 
 LIBFT	=	libft
 
