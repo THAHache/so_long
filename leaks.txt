@@ -1,0 +1,14 @@
+main
+	error_so_long : msg/ft_strjoin/free
+
+so_long : fd/open/close_bien/close_mal
+	read_map : buff/malloc/free_bien
+				map_r[0]/strdup/free_bien/free_mal
+				map_r[0]/gnl_strejoin/free_bien/free_mal
+		check_map : map.plan/ft_split/free_mal
+		check_path : path/ft_split/free_bien/free_mal
+	openwin : 	mlx/mlx_init/destroy_display
+				win/new_window/destroy_window
+				loop/loop/
+		draw_map : HAY QUE CAMBIAR TODA ESTA MIERDA PARA QUE NO OCUPE 800 CARACTERES
+		movement :

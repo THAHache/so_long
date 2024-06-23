@@ -6,7 +6,7 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:30:59 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/06/17 19:45:42 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/06/23 22:06:15 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,25 @@ typedef struct	s_map {
 	int	e;
 	int	c;
 }				t_map;
-typedef struct	s_sprite {
-	void	*img;
-	char	*route;
-	int	width;
-	int	height;
-}				t_sprite;
+
 
 /**
  * Estructura para guardar los sprites
  */
+typedef struct	s_sprite {
+	void	*img;
+	char	*route;
+}				t_sprite;
+
+typedef struct	s_sprlst {
+	t_sprite	wall;
+	t_sprite	floor;
+	t_sprite	pj;
+	t_sprite	exi;
+	t_sprite	coll;
+	int	width;
+	int	height;
+}				t_sprlst;
 
 typedef	struct s_player {
 	int	xlast;
@@ -71,7 +80,6 @@ typedef	struct s_player {
 	int	ylast;
 	int	ycurrent;
 	int	c;
-	//int	last_pos[2];
 }				t_player;
 
 typedef struct	s_vars {
@@ -92,7 +100,12 @@ void		initialize_vars(t_vars *vars);
 void		initialize_map(t_map *map);
 void		initialize_player(t_player *pla);
 void		initialize_img(t_sprite *floor, char *path);
-void		initialize_plan(t_sprite *floor, t_sprite *wall, t_sprite *pj, t_sprite *exi, t_sprite *coll);
+void		initialize_plan(t_sprlst *lst);
+
+int	check_nl(char *s);
+int	row_map(char *s, t_map *map);
+int	col_map(char **s);
+
 
 int	draw_map(t_vars vars);
 int	draw_floor(t_vars vars);
@@ -105,11 +118,11 @@ int	movement(t_vars *vars);
 int	increase_move(t_vars *vars, int x, int y);
 int	move(int keycode, t_vars *vars);
 
-void		destroy_images(t_vars vars, t_sprite *floor, t_sprite *wall, t_sprite *pj, t_sprite *exi, t_sprite *coll);
+void	destroy_images(t_vars vars, t_sprlst *lst);
 
 int		error_so_long(int er, char *s);
 int		can_read(char *s);
-int		check_map(int fd, t_map *map, t_player *pj);
+int		read_map(int fd, t_map *map, t_player *pj);
 int	check_path(char *s, t_player *jp);
 int		so_long(char *s);
 int		main(int argc, char *argv[]);

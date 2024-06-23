@@ -6,7 +6,7 @@
 #    By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 19:24:26 by jperez-r          #+#    #+#              #
-#    Updated: 2024/06/12 18:51:21 by jperez-r         ###   ########.fr        #
+#    Updated: 2024/06/23 18:09:09 by jperez-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ SRCS	=	so_long.c \
 		check_map.c \
 		check_path.c \
 		draw.c \
-		move.c
+		move.c \
+		count_map.c
 
 LIBFT	=	libft
 
@@ -44,6 +45,8 @@ CFLAGS	=	-Wall -Wextra -Werror
 
 MLXFLAGS =	-lmlx_Linux -lX11 -lXext -lm -lz
 
+SANI = -fsanitize=address
+
 RED		=	\033[31m
 GREEN	=	\033[32m
 YELLOW	=	\033[33m
@@ -69,7 +72,7 @@ ${NAME}	:	${OBJS}
 			fi
 #			@${CC} ${OBJS} -L${LIBFT} -L${MLX} -lft -o ${NAME}
 #			@${CC} ${OBJS} -L${LIBFT} -L${MLX} -L${MXFLAGS} -lft -o ${NAME}
-			@${CC} ${CFLAGS} ${OBJS} -L${LIBFT} -lft -Ilibft -Imlx_linux -L${MLX} ${MLXFLAGS} -o ${NAME}
+			@${CC} ${CFLAGS} ${SANI} ${OBJS} -L${LIBFT} -lft -Ilibft -Imlx_linux -L${MLX} ${MLXFLAGS} -o ${NAME}
 
 
 all		:	${NAME}

@@ -6,60 +6,16 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 14:39:28 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/06/17 19:59:01 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/06/23 21:30:08 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
 /**
- * Se contará el número de líneas que tiene el mapa
- * y se obviarán las líneas vacías
-*/
-int	row_map(char *s)
-{
-	int	i;
-	int	rm;
-
-	i = 0;
-	rm = 1;
-	while (s[i])
-	{
-		if(i != 0 && s[i] == '\n' && s[i - 1] != '\n')
-			rm++;
-		i++;
-	}
-	if(s[i - 1] == '\n')
-		rm--;
-	return (rm);
-}
-/**
- * Se contará el número de columnas de cada fila y se compararán entre sí
- * para comprobar que es cuadrado
-*/
-int	col_map(char **s)
-{
-	int	i;
-	int	j;
-	int	cm;
-
-	i = 0;
-	while (s[0][i])
-		i++;
-	cm = i;
-	i = 1;
-	while (s[i])
-	{
-		j = 0;
-		while (s[i][j])
-			j++;
-		if(cm != j)
-			return (1);
-		i++;
-	}
-	return (cm);
-}
-
+ * Revisa que toda la fila esté compuesta de muros.
+ * Evalua la primera y la última fila
+ */
 int	check_wall(char *row)
 {
 	int	i;
@@ -67,63 +23,101 @@ int	check_wall(char *row)
 	i = 0;
 	while (row[i])
 	{
-		if(row[i] != '1')
+		if (row[i] != '1')
 			return (1);
-		//printf("%i\n", row[i]);
 		i++;
 	}
 	return (0);
 }
+/**
+ * Se compara el caracter que haya en la posición indicada con
+ * los caracteres válidos (01CEP) y se va contando cuántos hay
+ */
+int check_object(t_map *map, t_player *jp, int i, int j)
+{
+	if (!ft_strchr("01CEP", map->plan[i][j]))
+		return (1);
+	if (map->plan[i][j] == 'C')
+		map->c++;
+	if (map->plan[i][j] == 'E')
+		map->e++;
+	if (map->plan[i][j] == 'P')
+	{
+		jp->ycurrent = i;
+		jp->xcurrent = j;
+		map->p++;
+	}
+	return (0);
+}
+			
 
-int	read_map(char *s, t_map *map, t_player *jp)
+/**
+ * Función que separa el mapa por líneas en una matriz para evaluar si:
+ * el mapa es cuadrado y está rodeado de muros
+ * los caracteres que se encuentran dentro son válidos (01CEP)
+ */
+int	check_map(char *s, t_map *map, t_player *jp)
 {
 	int	i;
 	int	j;
 
 	map->plan = ft_split(s, '\n');
 	map->col = col_map(map->plan);
-	//printf("col: %d", map->col);
-	if(check_wall(map->plan[0]) == 1 || check_wall(map->plan[map->row - 1]) == 1 || map->col < 2)
-	{
-		ft_free_double(map->plan);
-		return (1);
-	}
+	if (map->col < 2 || check_wall(map->plan[0]) == 1
+		|| check_wall(map->plan[map->row - 1]) == 1)
+		return (ft_free_double(map->plan));
 	i = 1;
 	while (map->plan[i + 1])
 	{
-		if (map->plan[i][0] != '1' || map->plan[i][strlen(map->plan[i]) - 1] != '1')
-		{
-			ft_free_double(map->plan);
-			return (1);
-		}
+		if (map->plan[i][0] != '1' || map->plan[i][map->col - 1]!= '1')
+			return (ft_free_double(map->plan));
 		j = 1;
-	//printf("hola");
 		while (map->plan[i][j] && j < map->col - 1)
 		{
-			//printf("%c, %i, %i\n", map->plan[i][j], map->e, map->p);
-			if(!ft_strchr("01CEP", map->plan[i][j]) || map->e > 1 || map->p > 1)
-			{
-				ft_free_double(map->plan);
-				return (1);
-			}
-			//printf("hola");
-			if(map->plan[i][j] == 'C')
-				map->c++;
-			if(map->plan[i][j] == 'E')
-				map->e++;
-			if(map->plan[i][j] == 'P')
-			{
-				jp->ycurrent = i;
-				jp->xcurrent = j;
-				map->p++;
-			}
+			if (check_object(map, jp, i, j))
+				return (ft_free_double(map->plan));
 			j++;
 		}
-			//printf("%s\n", map->plan[i]);
 		i++;
 	}
-	//printf("aqui\n");
-	//ft_free_double(map->plan);
+	if (map->e !=1 || map->p != 1 || map->c < 1)
+		return(ft_free_double(map->plan));
+	return (0);
+}
+
+int	free_aux(char *aux, int err)
+{
+	if (aux)
+		free(aux);
+	if (err > 0)
+		error_so_long(err, NULL);
+	return (1);
+}
+
+
+int	check_bad_map(char *map_r, t_map *map, t_player *pj)
+{
+	if (check_nl(map_r))
+	{
+		free_aux(map_r, 2);
+		return (1);
+	}
+	if (row_map(map_r, map) < 3)
+	{
+		free_aux(map_r, 2);
+		return (1);
+	}
+	if (check_map(map_r, map, pj))
+	{
+		free_aux(map_r, 2);
+		return (1);
+	}
+	if (check_path(map_r, pj))
+	{
+		ft_free_double(map->plan);
+		free_aux(map_r, 5);
+		return (1);
+	}
 	return (0);
 }
 
@@ -138,60 +132,34 @@ int	read_map(char *s, t_map *map, t_player *jp)
  * 11111	111
  * 1PCE1	1P1
  * 11111	1C1
- * 		1E1
- * 		111
+ * 			1E1
+ * 			111
  * 
 */
-int	check_map(int fd, t_map *map, t_player *pj)
+int	read_map(int fd, t_map *map, t_player *pj)
 {
-	//t_player	pj;
-	int		datamap;
+	static char	*map_r[4096];
 	char		*buff;
-	static char		*aux[4096];
-	
+	int			datamap;
 
 	buff = malloc(sizeof(char) * 1000);
-	if(!buff)
+	if (!buff)
 		return (1);
-	//initialize_player(pj);
-	if (*aux == NULL)
-		aux[0] = ft_strdup("");
+	if (*map_r == NULL)
+		map_r[0] = ft_strdup("");
 	datamap = 1;
-	//printf("%i\n", aux[0][0]);
 	while (datamap > 0)
 	{
 		datamap = read(fd, buff, 18);
 		buff[datamap] = '\0';
-		//printf("%i\n", buff[0]);
 		if (datamap > 0)
-			aux[0] = ft_strjoin(aux[0], buff);
+			map_r[0] = gnl_strjoin(map_r[0], buff);
 	}
 	free(buff);
-	map->row = row_map(aux[0]);
-	if(map->row < 3)
-	{
-		error_so_long(2, NULL);
-		free(aux[0]);
-		return (1);
-	}
 	if (datamap == -1)
-	{
-		free(aux[0]);
+		return (free_aux(map_r[0], 6));
+	if (check_bad_map(map_r[0], map, pj))
 		return (1);
-	}
-	if (read_map(aux[0], map, pj))
-	{
-		error_so_long(2, NULL);
-		free(aux[0]);
-		return (1);
-	}
-	
-	if(check_path(aux[0], pj))
-	{
-		error_so_long(5, NULL);
-		free(aux[0]);
-		return (1);
-	}
-	free(aux[0]);
+	free(map_r[0]);
 	return (0);
 }
