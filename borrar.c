@@ -233,3 +233,14 @@ int	paint_back(t_vars *vars, int color)
 	}
 	return (0);
 }
+
+
+/**
+ * Inicializar los límites del mapa y el eje central
+*/
+int	select_limit(t_vars *vars)
+{
+	vars->xlimit = vars->map.col * 32;
+	vars->ylimit = vars->map.row * 32;
+	return (0);
+}

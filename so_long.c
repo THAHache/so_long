@@ -6,58 +6,11 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 17:48:35 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/06/23 21:47:00 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:01:44 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-/**
- * Inicializar los límites del mapa y el eje central
-*/
-int	select_limit(t_vars *vars)
-{
-	vars->xlimit = vars->map.col * 32;
-	vars->ylimit = vars->map.row * 32;
-	return (0);
-}
-
-/**
- * Cierra la ventana y finaliza el programa cuando se pulsa el ESC
- * Se libera todo lo posible aunque se haga exit
-*/
-int	closewin(t_vars *vars)
-{
-	ft_free_double(vars->map.plan);
-	mlx_loop_end(vars->mlx);
-	mlx_destroy_window(vars->mlx, vars->win);
-	mlx_destroy_display(vars->mlx);
-	exit(0);
-	return (0);
-}
-
-/**
- * Creación y control de las ventanas y la estructura
- * El evento 17 representa cerrar la ventana con el aspa roja
-*/
-int	openwin(t_vars	*vars)
-{
-	vars->mlx = mlx_init();
-	if (!vars->mlx)
-		return (1);
-	select_limit(vars);
-	vars->win = mlx_new_window(vars->mlx, vars->xlimit,
-			vars->ylimit + 16, "so_long");
-	draw_map(*vars);
-	movement(vars);
-	mlx_hook(vars->win, 17, 0L, (void *)exit, NULL);
-	mlx_hook(vars->win, 2, 1L << 0, move, vars);
-	mlx_loop(vars->mlx);
-	mlx_destroy_window(vars->mlx, vars->win);
-	mlx_destroy_display(vars->mlx);
-	free(vars->mlx);
-	return (0);
-}
 
 /**
  * Función principal que gestiona la parte interna (chequeo de mapa)

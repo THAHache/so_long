@@ -6,19 +6,21 @@
 #    By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/11 19:24:26 by jperez-r          #+#    #+#              #
-#    Updated: 2024/06/23 18:09:09 by jperez-r         ###   ########.fr        #
+#    Updated: 2024/06/24 15:45:04 by jperez-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS	=	so_long.c \
 		error_so_long.c \
 		initialize_structs.c \
-		can_read.c \
+		read_map.c \
+		count_map.c \
 		check_map.c \
 		check_path.c \
-		draw.c \
+		win.c \
+		draw_map.c \
 		move.c \
-		count_map.c
+		draw.c
 
 LIBFT	=	libft
 

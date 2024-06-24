@@ -6,7 +6,7 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 18:51:02 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/06/22 18:44:51 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:56:12 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,35 +36,20 @@ int	movement(t_vars *vars)
 	mov = ft_itoa(vars->moves);
 	mlx_string_put(vars->mlx, vars->win, 37, vars->ylimit + 13, WHITE, mov);
 	if (vars->moves)
-	{
 		ft_putstr_fd("Steps: ", 1);
-		ft_putnbr_fd(vars->moves, 1);
-		ft_putchar_fd('\n', 1);
-	}
+	if (vars->moves)
+		ft_putendl_fd(mov, 1);
 	if (mov)
 		free(mov);
 	return (0);
 }
 
 /**
- * Incrementa el número de movimientos que se han hecho y se mueve.
- * El numero de movimientos máximo será de un int
-*/
-int	increase_move(t_vars *vars, int x, int y)
+ * Pinta las casillas en las que se encuentra actualmente el personaje
+ * y en la que se encontraba anteriormente cuando se mueve
+ */
+void	draw_move(t_vars *vars)
 {
-	if (vars->map.plan[vars->pj.ycurrent + y][vars->pj.xcurrent + x] == '1')
-		return (0);
-	vars->pj.xlast = vars->pj.xcurrent;
-	vars->pj.ylast = vars->pj.ycurrent;
-	if (x != 0)
-		vars->pj.xcurrent += x;
-	else
-		vars->pj.ycurrent += y;
-	if (vars->map.plan[vars->pj.ycurrent][vars->pj.xcurrent] == 'C')
-	{
-		vars->pj.c++;
-		vars->map.plan[vars->pj.ycurrent][vars->pj.xcurrent] = '0';
-	}
 	if (vars->map.plan[vars->pj.ylast][vars->pj.xlast] == 'E')
 		draw_close(*vars);
 	else
@@ -81,6 +66,28 @@ int	increase_move(t_vars *vars, int x, int y)
 	}
 	else
 		draw_pj(*vars);
+}
+
+/**
+ * Incrementa el número de movimientos que se han hecho y se mueve.
+ * El numero de movimientos máximo será de un int
+*/
+int	increase_move(t_vars *vars, int x, int y)
+{
+	if (vars->map.plan[vars->pj.ycurrent + y][vars->pj.xcurrent + x] == '1')
+		return (1);
+	vars->pj.xlast = vars->pj.xcurrent;
+	vars->pj.ylast = vars->pj.ycurrent;
+	if (x != 0)
+		vars->pj.xcurrent += x;
+	else
+		vars->pj.ycurrent += y;
+	if (vars->map.plan[vars->pj.ycurrent][vars->pj.xcurrent] == 'C')
+	{
+		vars->pj.c++;
+		vars->map.plan[vars->pj.ycurrent][vars->pj.xcurrent] = '0';
+	}
+	draw_move(vars);
 	vars->moves++;
 	movement(vars);
 	return (0);

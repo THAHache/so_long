@@ -6,7 +6,7 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:30:59 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/06/23 22:06:15 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:51:25 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,35 +46,38 @@
 # define GREEN 0x00FFFFFF
 # define BLUE 0x0000FF00
 
-typedef struct	s_map {
+typedef struct s_map
+{
 	char	**plan;
-	int	row;
-	int	col;
-	int	p;
-	int	e;
-	int	c;
+	int		row;
+	int		col;
+	int		p;
+	int		e;
+	int		c;
 }				t_map;
-
 
 /**
  * Estructura para guardar los sprites
  */
-typedef struct	s_sprite {
+typedef struct s_sprite
+{
 	void	*img;
 	char	*route;
 }				t_sprite;
 
-typedef struct	s_sprlst {
+typedef struct s_sprlst
+{
 	t_sprite	wall;
 	t_sprite	floor;
 	t_sprite	pj;
 	t_sprite	exi;
 	t_sprite	coll;
-	int	width;
-	int	height;
+	int			width;
+	int			height;
 }				t_sprlst;
 
-typedef	struct s_player {
+typedef struct s_player
+{
 	int	xlast;
 	int	xcurrent;
 	int	ylast;
@@ -82,48 +85,62 @@ typedef	struct s_player {
 	int	c;
 }				t_player;
 
-typedef struct	s_vars {
+typedef struct s_vars
+{
 	void		*mlx;
 	void		*win;
-	int		x;
-	int		xlimit;
-	int		y;
-	int		ylimit;
-	int		moves;
+	int			x;
+	int			xlimit;
+	int			y;
+	int			ylimit;
+	int			moves;
 	t_map		map;
 	t_player	pj;
 }				t_vars;
 
-int	closewin(t_vars *vars);
-
-void		initialize_vars(t_vars *vars);
-void		initialize_map(t_map *map);
-void		initialize_player(t_player *pla);
-void		initialize_img(t_sprite *floor, char *path);
-void		initialize_plan(t_sprlst *lst);
-
-int	check_nl(char *s);
-int	row_map(char *s, t_map *map);
-int	col_map(char **s);
-
-
-int	draw_map(t_vars vars);
-int	draw_floor(t_vars vars);
-int	draw_close(t_vars vars);
-int	draw_pj(t_vars vars);
-int	draw_open(t_vars vars);
-int	draw_pje(t_vars vars);
-
-int	movement(t_vars *vars);
-int	increase_move(t_vars *vars, int x, int y);
-int	move(int keycode, t_vars *vars);
-
-void	destroy_images(t_vars vars, t_sprlst *lst);
-
 int		error_so_long(int er, char *s);
-int		can_read(char *s);
+
+void	initialize_vars(t_vars *vars);
+void	initialize_map(t_map *map);
+void	initialize_player(t_player *pla);
+void	initialize_img(t_sprite *floor, char *path);
+void	initialize_plan(t_sprlst *lst);
+
+void	draw_floor(t_vars vars);
+void	draw_close(t_vars vars);
+void	draw_pj(t_vars vars);
+void	draw_open(t_vars vars);
+void	draw_pje(t_vars vars);
+
+int		movement(t_vars *vars);
+void	draw_move(t_vars *vars);
+int		increase_move(t_vars *vars, int x, int y);
+int		move(int keycode, t_vars *vars);
+
+void	select_images(t_vars vars, t_sprlst *lst);
+void	destroy_images(t_vars vars, t_sprlst *lst);
+void	put_image(t_vars vars, t_sprlst lst, int i, int j);
+int		draw_map(t_vars vars);
+
+void	closewin(t_vars *vars);
+int		openwin(t_vars	*vars);
+
+void	p_refill(char **plan, int y, int x);
+int		check_path(char *s, t_player *jp);
+
+int		check_wall(char *row);
+int		check_object(t_map *map, t_player *jp, int i, int j);
+int		check_map(char *s, t_map *map, t_player *jp);
+
+int		check_nl(char *s);
+int		row_map(char *s, t_map *map);
+int		col_map(char **s);
+
+//int		can_read(char *s);
+int		free_read(char *aux, int err);
+int		check_bad_map(char *map_r, t_map *map, t_player *pj);
 int		read_map(int fd, t_map *map, t_player *pj);
-int	check_path(char *s, t_player *jp);
+
 int		so_long(char *s);
 int		main(int argc, char *argv[]);
 

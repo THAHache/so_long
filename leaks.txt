@@ -10,5 +10,8 @@ so_long : fd/open/close_bien/close_mal
 	openwin : 	mlx/mlx_init/destroy_display
 				win/new_window/destroy_window
 				loop/loop/
-		draw_map : HAY QUE CAMBIAR TODA ESTA MIERDA PARA QUE NO OCUPE 800 CARACTERES
-		movement :
+		draw_map : lst/select_images/destroy images
+		movement :	mov/ft_itoa/free
+		move : -
+			increase_move :	-
+				draw-* : img/xpm_to_img/destroy_image

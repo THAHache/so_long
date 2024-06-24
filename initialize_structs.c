@@ -6,7 +6,7 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 17:16:49 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/06/23 22:03:03 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:34:35 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,4 @@ void	initialize_vars(t_vars *vars)
 	vars->moves = 0;
 	initialize_map(&vars->map);
 	initialize_player(&vars->pj);
-}
-
-void	destroy_images(t_vars vars, t_sprlst *lst)
-{
-	mlx_destroy_image(vars.mlx, lst->floor.img);
-	mlx_destroy_image(vars.mlx, lst->wall.img);
-	mlx_destroy_image(vars.mlx, lst->pj.img);
-	mlx_destroy_image(vars.mlx, lst->exi.img);
-	mlx_destroy_image(vars.mlx, lst->coll.img);
 }

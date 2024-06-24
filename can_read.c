@@ -6,15 +6,16 @@
 /*   By: jperez-r <jperez-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 14:37:44 by jperez-r          #+#    #+#             */
-/*   Updated: 2024/06/22 22:17:38 by jperez-r         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:56:36 by jperez-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-
 /**
  * Función para comprobar si el archivo existe y si tiene permisos
+ * Como son funciones no autorizadas, pues ahí se queda. Ya se le dará uso 
+ * en otro momento.
  */
 int	can_read(char *s)
 {
